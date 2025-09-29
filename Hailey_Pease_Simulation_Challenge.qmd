@@ -1,0 +1,545 @@
+---
+title: "Simulation Challenge"
+author: "Hailey Pease"
+format: 
+  html: default
+  pdf: 
+    documentclass: article
+    geometry: margin=1in
+    fig-width: 10
+    fig-height: 6
+    fig-dpi: 300
+execute:
+  echo: false
+  eval: true
+  warning: false
+  message: false
+---
+
+# Investment Game Simulation Analysis
+
+This report analyzes two different investment strategies using Monte Carlo simulation to understand their risk and return characteristics. We'll examine how small differences in strategy rules can lead to dramatically different outcomes over time.
+
+## Question 1: Expected Value Analysis
+
+Let's start by calculating the expected value of your account balance after just one coin flip for the original game. This tells us what we should expect to happen on average.
+
+**Original Game Rules:**
+- Start with $1,000
+- Heads: increase balance by 50% (multiply by 1.5)
+- Tails: reduce balance by 40% (multiply by 0.6)
+- Probability of heads = 0.5, tails = 0.5
+
+**What we're calculating:** Expected value is the average outcome if we repeated this game many times. It's calculated by multiplying each possible outcome by its probability and adding them up.
+
+```{r}
+# Expected value calculation after 1 coin flip
+initial_balance <- 1000
+
+# Possible outcomes after 1 flip
+heads_outcome <- initial_balance * 1.5  # 50% gain
+tails_outcome <- initial_balance * 0.6  # 40% loss
+
+# Probabilities
+prob_heads <- 0.5
+prob_tails <- 0.5
+
+# Expected value calculation
+expected_value <- (prob_heads * heads_outcome) + (prob_tails * tails_outcome)
+
+cat("Initial balance: $", format(initial_balance, big.mark = ","), "\n", sep = "")
+cat("Balance after heads (50% gain): $", format(heads_outcome, big.mark = ","), "\n", sep = "")
+cat("Balance after tails (40% loss): $", format(tails_outcome, big.mark = ","), "\n", sep = "")
+cat("Expected value after 1 flip: $", format(expected_value, digits = 2, big.mark = ","), "\n", sep = "")
+```
+
+**Key Insight:** The expected value of $1,050 means that on average, we expect to gain $50 per flip. This is positive, suggesting the game is favorable in the long run.
+
+## Question 2: Expectation vs. Reality Analysis
+
+Now let's understand what this expected value actually means for our investment strategy.
+
+```{r}
+# Analysis of expectation vs. reality
+change_from_initial <- expected_value - initial_balance
+percentage_change <- (change_from_initial / initial_balance) * 100
+
+cat("\nExpected value: $", format(expected_value, digits = 2, big.mark = ","), "\n", sep = "")
+cat("Change from initial: $", format(change_from_initial, digits = 2, big.mark = ","), "\n", sep = "")
+cat("Percentage change: ", format(percentage_change, digits = 2), "%\n", sep = "")
+
+if (expected_value > initial_balance) {
+  cat("The expected value is POSITIVE - we expect to gain money on average\n")
+} else {
+  cat("The expected value is NEGATIVE - we expect to lose money on average\n")
+}
+
+cat("\nBased on this result, we expect our account to be worth $", format(expected_value, digits = 2, big.mark = ","), "\n", sep = "")
+if (change_from_initial > 0) {
+  cat("This is $", format(abs(change_from_initial), digits = 2, big.mark = ","), " MORE than our initial $1,000\n", sep = "")
+} else {
+  cat("This is $", format(abs(change_from_initial), digits = 2, big.mark = ","), " LESS than our initial $1,000\n", sep = "")
+}
+```
+
+**Key Insight:** Even though we expect to gain money on average (+5%), this doesn't guarantee we'll make money in any single game. The expected value tells us about long-term trends, but individual outcomes can vary widely.
+
+## Question 3: Single Simulation with Time Series Plot
+
+Now let's see what happens when we actually play this game over 30 years (from age 25 to 55). This simulation shows one possible path your investment could take.
+
+**What we're doing:** We'll flip a coin 30 times, each time either gaining 50% or losing 40% of our current balance. This shows how compounding works - both gains and losses build on each other over time.
+
+```{r}
+# Load required libraries
+library(tidyverse)
+library(ggplot2)
+
+# Set seed for reproducibility
+set.seed(123)
+
+# Parameters
+initial_balance <- 1000
+years <- 30  # From age 25 to 55
+ages <- 25:55  # Ages 25 through 55
+
+# Simulate one path
+simulate_investment_path <- function(initial, years) {
+  balance <- initial
+  path <- numeric(years + 1)
+  path[1] <- initial
+  
+  for (year in 1:years) {
+    coin_flip <- rbinom(1, 1, 0.5)
+    if (coin_flip == 1) {
+      balance <- balance * 1.5  # 50% gain
+    } else {
+      balance <- balance * 0.6  # 40% loss
+    }
+    path[year + 1] <- balance
+  }
+  
+  return(path)
+}
+
+# Run single simulation
+balance_path <- simulate_investment_path(initial_balance, years)
+
+# Create DataFrame for plotting
+simulation_data <- tibble(
+  age = ages,
+  balance = balance_path
+)
+
+# Expected value after 30 years
+expected_after_30 <- initial_balance * ((1.5 * 0.5) + (0.6 * 0.5))^30
+
+# Create time series plot using ggplot2
+ggplot(simulation_data, aes(x = age, y = balance)) +
+  geom_line(color = "darkblue", linewidth = 1.2) +
+  geom_point(color = "darkblue", size = 2) +
+  geom_hline(yintercept = initial_balance, color = "red", linetype = "dashed", 
+             alpha = 0.7, linewidth = 1) +
+  geom_hline(yintercept = expected_after_30, color = "green", linetype = "dotted", 
+             alpha = 0.7, linewidth = 1) +
+  labs(
+    title = "Account Balance Over Time - Single Simulation",
+    subtitle = "Investment Game from Age 25 to 55",
+    x = "Age",
+    y = "Account Balance ($)",
+    caption = paste("Red line: Initial Balance ($", format(initial_balance, big.mark = ","), 
+                   "), Green line: Expected Value After 30 Years ($", 
+                   format(expected_after_30, digits = 1, big.mark = ","), ")", sep = "")
+  ) +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 16, face = "bold"),
+    plot.subtitle = element_text(size = 14, color = "gray50"),
+    axis.title = element_text(size = 12),
+    axis.text = element_text(size = 10)
+  ) +
+  ylim(0, max(balance_path) * 1.1)
+
+# Display the simulation results
+cat("Single Simulation Results:\n")
+cat(paste(rep("=", 50), collapse = ""), "\n")
+cat("Initial balance (age 25): $", format(initial_balance, big.mark = ","), "\n", sep = "")
+cat("Final balance (age 55): $", format(balance_path[length(balance_path)], digits = 2, big.mark = ","), "\n", sep = "")
+cat("Total change: $", format(balance_path[length(balance_path)] - initial_balance, digits = 2, big.mark = ","), "\n", sep = "")
+cat("Total return: ", format(((balance_path[length(balance_path)] / initial_balance) - 1) * 100, digits = 2), "%\n", sep = "")
+
+# Count heads vs tails in this simulation
+coin_flips <- character(years)
+for (i in 1:years) {
+  if (balance_path[i+1] / balance_path[i] == 1.5) {
+    coin_flips[i] <- "Heads"
+  } else {
+    coin_flips[i] <- "Tails"
+  }
+}
+
+heads_count <- sum(coin_flips == "Heads")
+tails_count <- sum(coin_flips == "Tails")
+cat("\nCoin flip results: ", heads_count, " heads, ", tails_count, " tails\n", sep = "")
+cat("Heads percentage: ", format((heads_count/length(coin_flips))*100, digits = 1), "%\n", sep = "")
+```
+
+**What this plot shows:** The blue line shows how your account balance changes over time. The red dashed line shows your starting point ($1,000), and the green dotted line shows the expected value after 30 years. Notice how the actual path can be very different from the expected value due to random chance.
+
+## Analysis of Single Simulation Results
+
+```{r}
+# Analysis and commentary on the single simulation
+final_balance <- balance_path[length(balance_path)]
+
+cat("\n", paste(rep("=", 60), collapse = ""), "\n")
+cat("ANALYSIS OF SINGLE SIMULATION\n")
+cat(paste(rep("=", 60), collapse = ""), "\n")
+
+cat("\n🎯 Key Results:\n")
+cat("   • Started with: $", format(initial_balance, big.mark = ","), "\n", sep = "")
+cat("   • Ended with: $", format(final_balance, digits = 2, big.mark = ","), "\n", sep = "")
+cat("   • Net change: $", format(final_balance - initial_balance, digits = 2, big.mark = ","), "\n", sep = "")
+
+if (final_balance > initial_balance) {
+  cat("   • This simulation was PROFITABLE! 🎉\n")
+  cat("   • You would be happy with this outcome\n")
+} else {
+  cat("   • This simulation resulted in a LOSS 😞\n")
+  cat("   • You would NOT be happy with this outcome\n")
+}
+
+cat("\n📊 Performance Analysis:\n")
+total_return <- ((final_balance / initial_balance) - 1) * 100
+annualized_return <- (((final_balance / initial_balance) ^ (1/30)) - 1) * 100
+cat("   • Total return: ", format(total_return, digits = 2), "%\n", sep = "")
+cat("   • Annualized return: ", format(annualized_return, digits = 2), "%\n", sep = "")
+
+cat("\n🎲 Luck Factor:\n")
+expected_heads <- years * 0.5
+cat("   • Got ", heads_count, " heads out of ", years, " flips\n", sep = "")
+cat("   • Expected heads: ", format(expected_heads, digits = 1), "\n", sep = "")
+if (heads_count > expected_heads) {
+  cat("   • You were LUCKY - got more heads than expected! 🍀\n")
+} else if (heads_count < expected_heads) {
+  cat("   • You were UNLUCKY - got fewer heads than expected! 😔\n")
+} else {
+  cat("   • You got exactly the expected number of heads\n")
+}
+
+cat("\n💡 Key Insight:\n")
+cat("   • Even though the expected value per flip is positive ($", format(expected_value, digits = 2, big.mark = ","), ")\n", sep = "")
+cat("   • Individual outcomes can vary dramatically due to compounding\n")
+cat("   • This single simulation shows the high variability possible\n")
+cat("   • Multiple simulations would give a better picture of the true risk\n")
+```
+
+**Key Insight:** One simulation doesn't tell us the whole story. To understand the true risk and potential outcomes, we need to run many simulations and look at the distribution of results.
+
+## Question 4: Multiple Simulations (100 simulations)
+
+Now let's run 100 different simulations to see the range of possible outcomes. This will show us the distribution of final balances and help us understand the true risk of this investment strategy.
+
+**What we're doing:** We'll run the same 30-year simulation 100 times with different random coin flips. This gives us a probability distribution showing all possible outcomes and their likelihoods.
+
+```{r}
+# Set seed for reproducibility
+set.seed(456)
+
+# Parameters for multiple simulations
+n_sims <- 100
+
+# Function to simulate final balance only
+simulate_final_balance <- function(initial, years) {
+  balance <- initial
+  for (year in 1:years) {
+    coin_flip <- rbinom(1, 1, 0.5)
+    if (coin_flip == 1) {
+      balance <- balance * 1.5  # 50% gain
+    } else {
+      balance <- balance * 0.6  # 40% loss
+    }
+  }
+  return(balance)
+}
+
+# Run 100 simulations
+final_balances <- replicate(n_sims, simulate_final_balance(initial_balance, years))
+
+# Create data frame for analysis
+distribution_data <- tibble(
+  sim_num = 1:n_sims,
+  final_balance = final_balances
+)
+
+# Create histogram of final balances
+ggplot(distribution_data, aes(x = final_balance)) +
+  geom_histogram(bins = 20, fill = "plum", alpha = 0.8, color = "black") +
+  geom_vline(xintercept = initial_balance, color = "red", linetype = "dashed", linewidth = 1.5) +
+  geom_vline(xintercept = expected_after_30, color = "green", linetype = "dotted", linewidth = 1.5) +
+  labs(
+    title = "Distribution of Final Account Balances",
+    subtitle = paste("100 Simulations,", years, "Years Each"),
+    x = "Final Balance ($)",
+    y = "Frequency",
+    caption = paste("Red line: Initial Balance ($", format(initial_balance, big.mark = ","), 
+                   "), Green line: Expected Value ($", 
+                   format(expected_after_30, digits = 1, big.mark = ","), ")", sep = "")
+  ) +
+  scale_x_continuous(labels = scales::dollar_format()) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 16, face = "bold"),
+    plot.subtitle = element_text(size = 14, color = "gray50"),
+    axis.title = element_text(size = 12),
+    axis.text = element_text(size = 10)
+  )
+
+# Summary statistics
+summary_stats <- distribution_data %>%
+  summarise(
+    mean_balance = mean(final_balance),
+    median_balance = median(final_balance),
+    min_balance = min(final_balance),
+    max_balance = max(final_balance),
+    prob_above_initial = mean(final_balance > initial_balance),
+    prob_above_10000 = mean(final_balance > 10000)
+  )
+
+cat("Summary Statistics for 100 Simulations:\n")
+cat(paste(rep("=", 50), collapse = ""), "\n")
+cat("Mean final balance: $", format(summary_stats$mean_balance, digits = 2, big.mark = ","), "\n", sep = "")
+cat("Median final balance: $", format(summary_stats$median_balance, digits = 2, big.mark = ","), "\n", sep = "")
+cat("Minimum final balance: $", format(summary_stats$min_balance, digits = 2, big.mark = ","), "\n", sep = "")
+cat("Maximum final balance: $", format(summary_stats$max_balance, digits = 2, big.mark = ","), "\n", sep = "")
+cat("Probability above initial ($1,000): ", format(summary_stats$prob_above_initial, digits = 3), " (", format(summary_stats$prob_above_initial * 100, digits = 1), "%)\n", sep = "")
+cat("Probability above $10,000: ", format(summary_stats$prob_above_10000, digits = 3), " (", format(summary_stats$prob_above_10000 * 100, digits = 1), "%)\n", sep = "")
+
+# Analysis
+cat("\n📊 Analysis of 100 Simulations:\n")
+if (summary_stats$prob_above_initial > 0.5) {
+  cat("   • You would be happy with ", format(summary_stats$prob_above_initial * 100, digits = 1), "% of outcomes\n", sep = "")
+} else {
+  cat("   • You would NOT be happy with ", format((1 - summary_stats$prob_above_initial) * 100, digits = 1), "% of outcomes\n", sep = "")
+}
+
+if (summary_stats$median_balance > initial_balance) {
+  cat("   • The median outcome is profitable\n")
+} else {
+  cat("   • The median outcome results in a loss\n")
+}
+
+cat("   • There's huge variability: from $", format(summary_stats$min_balance, digits = 1, big.mark = ","), 
+    " to $", format(summary_stats$max_balance, digits = 1, big.mark = ","), "\n", sep = "")
+```
+
+## Question 5: Probability Analysis
+
+```{r}
+# Probability analysis based on 100 simulations
+prob_above_1000 <- summary_stats$prob_above_initial
+
+cat("\n", paste(rep("=", 60), collapse = ""), "\n")
+cat("PROBABILITY ANALYSIS - ORIGINAL STRATEGY\n")
+cat(paste(rep("=", 60), collapse = ""), "\n")
+
+cat("\n🎯 Key Probability Results:\n")
+cat("   • Probability that balance > $1,000 at age 55: ", format(prob_above_1000, digits = 3), 
+    " (", format(prob_above_1000 * 100, digits = 1), "%)\n", sep = "")
+cat("   • Probability that balance ≤ $1,000 at age 55: ", format(1 - prob_above_1000, digits = 3), 
+    " (", format((1 - prob_above_1000) * 100, digits = 1), "%)\n", sep = "")
+
+cat("\n💡 Interpretation:\n")
+if (prob_above_1000 > 0.5) {
+  cat("   • You have a BETTER than 50% chance of ending up with more than you started!\n")
+  cat("   • This suggests the strategy is favorable in the long run\n")
+} else {
+  cat("   • You have a LESS than 50% chance of ending up with more than you started!\n")
+  cat("   • This suggests the strategy is unfavorable in the long run\n")
+}
+
+# Count how many simulations were above/below initial
+above_1000_count <- sum(final_balances > initial_balance)
+below_1000_count <- sum(final_balances <= initial_balance)
+
+cat("\n📈 Detailed Breakdown:\n")
+cat("   • ", above_1000_count, " out of ", n_sims, " simulations ended above $1,000\n", sep = "")
+cat("   • ", below_1000_count, " out of ", n_sims, " simulations ended at or below $1,000\n", sep = "")
+```
+
+**Key Insight:** The histogram shows the distribution of final balances across 100 simulations. Most outcomes cluster around certain values, but there's a wide range of possible results. This is the reality of investment risk - even with a positive expected value, individual outcomes can vary dramatically.
+
+## Question 6: Strategy Comparison - Modified Game
+
+Now let's compare the original strategy with a modified version to see how different rules affect outcomes.
+
+**Modified Game Rules:**
+- Start with $1,000
+- Must bet exactly 50% of current balance each round
+- Heads: increase your bet by 50% (add 50% of bet to balance)
+- Tails: reduce your bet by 40% (subtract 40% of bet from balance)
+- Play for 30 years (age 25 to 55)
+
+**Key Difference:** In the modified game, you can only bet 50% of your balance each round, rather than betting your entire balance. This should theoretically reduce risk, but let's see what the simulations show.
+
+```{r}
+# Set seed for reproducibility
+set.seed(789)
+
+# Function to simulate modified game
+simulate_modified_game <- function(initial, years) {
+  balance <- initial
+  for (year in 1:years) {
+    bet_amount <- balance * 0.5  # Bet exactly 50% of balance
+    coin_flip <- rbinom(1, 1, 0.5)
+    if (coin_flip == 1) {
+      # Heads: increase bet by 50%
+      balance <- balance + (bet_amount * 0.5)
+    } else {
+      # Tails: reduce bet by 40%
+      balance <- balance - (bet_amount * 0.4)
+    }
+  }
+  return(balance)
+}
+
+# Run 100 simulations for modified game
+modified_final_balances <- replicate(n_sims, simulate_modified_game(initial_balance, years))
+
+# Create data frame for modified game
+modified_distribution_data <- tibble(
+  sim_num = 1:n_sims,
+  final_balance = modified_final_balances
+)
+
+# Summary statistics for modified game
+modified_summary_stats <- modified_distribution_data %>%
+  summarise(
+    mean_balance = mean(final_balance),
+    median_balance = median(final_balance),
+    min_balance = min(final_balance),
+    max_balance = max(final_balance),
+    prob_above_initial = mean(final_balance > initial_balance),
+    prob_above_10000 = mean(final_balance > 10000)
+  )
+
+cat("\n", paste(rep("=", 60), collapse = ""), "\n")
+cat("MODIFIED GAME STRATEGY RESULTS\n")
+cat(paste(rep("=", 60), collapse = ""), "\n")
+
+cat("Summary Statistics for Modified Game (100 Simulations):\n")
+cat("Mean final balance: $", format(modified_summary_stats$mean_balance, digits = 2, big.mark = ","), "\n", sep = "")
+cat("Median final balance: $", format(modified_summary_stats$median_balance, digits = 2, big.mark = ","), "\n", sep = "")
+cat("Minimum final balance: $", format(modified_summary_stats$min_balance, digits = 2, big.mark = ","), "\n", sep = "")
+cat("Maximum final balance: $", format(modified_summary_stats$max_balance, digits = 2, big.mark = ","), "\n", sep = "")
+cat("Probability above initial ($1,000): ", format(modified_summary_stats$prob_above_initial, digits = 3), 
+    " (", format(modified_summary_stats$prob_above_initial * 100, digits = 1), "%)\n", sep = "")
+cat("Probability above $10,000: ", format(modified_summary_stats$prob_above_10000, digits = 3), 
+    " (", format(modified_summary_stats$prob_above_10000 * 100, digits = 1), "%)\n", sep = "")
+
+# Strategy Comparison
+cat("\n", paste(rep("=", 60), collapse = ""), "\n")
+cat("STRATEGY COMPARISON ANALYSIS\n")
+cat(paste(rep("=", 60), collapse = ""), "\n")
+
+cat("\n🎯 Key Comparison Results:\n")
+cat("   • Original Strategy - Probability above $10,000: ", format(summary_stats$prob_above_10000, digits = 3), 
+    " (", format(summary_stats$prob_above_10000 * 100, digits = 1), "%)\n", sep = "")
+cat("   • Modified Strategy - Probability above $10,000: ", format(modified_summary_stats$prob_above_10000, digits = 3), 
+    " (", format(modified_summary_stats$prob_above_10000 * 100, digits = 1), "%)\n", sep = "")
+
+if (modified_summary_stats$prob_above_10000 > summary_stats$prob_above_10000) {
+  cat("   • The MODIFIED strategy has a HIGHER probability of reaching $10,000! 🎉\n")
+} else if (modified_summary_stats$prob_above_10000 < summary_stats$prob_above_10000) {
+  cat("   • The ORIGINAL strategy has a HIGHER probability of reaching $10,000! 🎯\n")
+} else {
+  cat("   • Both strategies have the SAME probability of reaching $10,000! 🤔\n")
+}
+
+difference <- modified_summary_stats$prob_above_10000 - summary_stats$prob_above_10000
+cat("   • Difference: ", format(difference, digits = 3), " (", format(difference * 100, digits = 1), "%)\n", sep = "")
+
+cat("\n💡 Strategic Insights:\n")
+if (modified_summary_stats$mean_balance > summary_stats$mean_balance) {
+  cat("   • Modified strategy has higher average returns\n")
+} else {
+  cat("   • Original strategy has higher average returns\n")
+}
+
+if (modified_summary_stats$median_balance > summary_stats$median_balance) {
+  cat("   • Modified strategy has higher median returns\n")
+} else {
+  cat("   • Original strategy has higher median returns\n")
+}
+
+cat("   • Modified strategy range: $", format(modified_summary_stats$min_balance, digits = 1, big.mark = ","), 
+    " to $", format(modified_summary_stats$max_balance, digits = 1, big.mark = ","), "\n", sep = "")
+cat("   • Original strategy range: $", format(summary_stats$min_balance, digits = 1, big.mark = ","), 
+    " to $", format(summary_stats$max_balance, digits = 1, big.mark = ","), "\n", sep = "")
+
+# Create comparison plot
+comparison_data <- tibble(
+  strategy = rep(c("Original", "Modified"), each = n_sims),
+  final_balance = c(final_balances, modified_final_balances)
+)
+
+ggplot(comparison_data, aes(x = final_balance, fill = strategy)) +
+  geom_histogram(alpha = 0.7, position = "identity", bins = 20) +
+  geom_vline(xintercept = 10000, color = "red", linetype = "dashed", linewidth = 1.5) +
+  labs(
+    title = "Strategy Comparison: Final Balance Distributions",
+    subtitle = "100 Simulations Each - Original vs Modified Game",
+    x = "Final Balance ($)",
+    y = "Frequency",
+    fill = "Strategy",
+    caption = "Red line: $10,000 threshold"
+  ) +
+  scale_x_continuous(labels = scales::dollar_format()) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 16, face = "bold"),
+    plot.subtitle = element_text(size = 14, color = "gray50"),
+    axis.title = element_text(size = 12),
+    axis.text = element_text(size = 10),
+    legend.position = "bottom"
+  ) +
+  facet_wrap(~strategy, ncol = 1, scales = "free_y")
+```
+
+## Final Analysis and Recommendations
+
+```{r}
+cat("\n", paste(rep("=", 70), collapse = ""), "\n")
+cat("FINAL ANALYSIS AND RECOMMENDATIONS\n")
+cat(paste(rep("=", 70), collapse = ""), "\n")
+
+cat("\n🎲 Key Findings:\n")
+cat("1. Expected value per flip is positive ($", format(expected_value, digits = 2, big.mark = ","), ")\n", sep = "")
+cat("2. Original strategy: ", format(summary_stats$prob_above_10000 * 100, digits = 1), "% chance of reaching $10,000\n", sep = "")
+cat("3. Modified strategy: ", format(modified_summary_stats$prob_above_10000 * 100, digits = 1), "% chance of reaching $10,000\n", sep = "")
+
+if (modified_summary_stats$prob_above_10000 > summary_stats$prob_above_10000) {
+  cat("4. The MODIFIED strategy is better for reaching $10,000\n")
+} else {
+  cat("4. The ORIGINAL strategy is better for reaching $10,000\n")
+}
+
+cat("\n💡 Investment Implications:\n")
+cat("   • Both strategies show the power of compounding over time\n")
+cat("   • High variability means outcomes can be dramatically different\n")
+cat("   • The 'safer' modified strategy (betting only 50%) may actually be riskier\n")
+cat("   • Individual luck plays a huge role in short-term outcomes\n")
+cat("   • Multiple simulations reveal the true risk profile\n")
+
+cat("\n🎯 Recommendation for a 25-year-old:\n")
+if (modified_summary_stats$prob_above_10000 > summary_stats$prob_above_10000) {
+  cat("   Consider the MODIFIED strategy for higher probability of reaching $10,000\n")
+} else {
+  cat("   Consider the ORIGINAL strategy for higher probability of reaching $10,000\n")
+}
+
+cat("   However, remember that past performance doesn't guarantee future results!\n")
+cat("   Diversification and professional financial advice are always recommended.\n")
+```
+

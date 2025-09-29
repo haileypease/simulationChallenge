@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.22">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Hailey Pease">
+
+<title>Simulation Challenge</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="Hailey_Pease_Simulation_Challenge_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Hailey_Pease_Simulation_Challenge_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="Hailey_Pease_Simulation_Challenge_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="Hailey_Pease_Simulation_Challenge_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="Hailey_Pease_Simulation_Challenge_files/libs/quarto-html/popper.min.js"></script>
+<script src="Hailey_Pease_Simulation_Challenge_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Hailey_Pease_Simulation_Challenge_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Hailey_Pease_Simulation_Challenge_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Hailey_Pease_Simulation_Challenge_files/libs/quarto-html/quarto-syntax-highlighting-cd7454b418030687c631a6a7286fbe16.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Hailey_Pease_Simulation_Challenge_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Hailey_Pease_Simulation_Challenge_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Hailey_Pease_Simulation_Challenge_files/libs/bootstrap/bootstrap-9e3ffae467580fdb927a41352e75a2e0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="Hailey_Pease_Simulation_Challenge.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Simulation Challenge</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Hailey Pease </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="investment-game-simulation-analysis" class="level1">
+<h1>Investment Game Simulation Analysis</h1>
+<p>This report analyzes two different investment strategies using Monte Carlo simulation to understand their risk and return characteristics. We’ll examine how small differences in strategy rules can lead to dramatically different outcomes over time.</p>
+<section id="question-1-expected-value-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="question-1-expected-value-analysis">Question 1: Expected Value Analysis</h2>
+<p>Let’s start by calculating the expected value of your account balance after just one coin flip for the original game. This tells us what we should expect to happen on average.</p>
+<p><strong>Original Game Rules:</strong> - Start with $1,000 - Heads: increase balance by 50% (multiply by 1.5) - Tails: reduce balance by 40% (multiply by 0.6) - Probability of heads = 0.5, tails = 0.5</p>
+<p><strong>What we’re calculating:</strong> Expected value is the average outcome if we repeated this game many times. It’s calculated by multiplying each possible outcome by its probability and adding them up.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Initial balance: $1,000</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Balance after heads (50% gain): $1,500</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Balance after tails (40% loss): $600</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Expected value after 1 flip: $1,050</code></pre>
+</div>
+</div>
+<p><strong>Key Insight:</strong> The expected value of $1,050 means that on average, we expect to gain $50 per flip. This is positive, suggesting the game is favorable in the long run.</p>
+</section>
+<section id="question-2-expectation-vs.-reality-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="question-2-expectation-vs.-reality-analysis">Question 2: Expectation vs.&nbsp;Reality Analysis</h2>
+<p>Now let’s understand what this expected value actually means for our investment strategy.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Expected value: $1,050</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Change from initial: $50</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Percentage change: 5%</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>The expected value is POSITIVE - we expect to gain money on average</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Based on this result, we expect our account to be worth $1,050</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>This is $50 MORE than our initial $1,000</code></pre>
+</div>
+</div>
+<p><strong>Key Insight:</strong> Even though we expect to gain money on average (+5%), this doesn’t guarantee we’ll make money in any single game. The expected value tells us about long-term trends, but individual outcomes can vary widely.</p>
+</section>
+<section id="question-3-single-simulation-with-time-series-plot" class="level2">
+<h2 class="anchored" data-anchor-id="question-3-single-simulation-with-time-series-plot">Question 3: Single Simulation with Time Series Plot</h2>
+<p>Now let’s see what happens when we actually play this game over 30 years (from age 25 to 55). This simulation shows one possible path your investment could take.</p>
+<p><strong>What we’re doing:</strong> We’ll flip a coin 30 times, each time either gaining 50% or losing 40% of our current balance. This shows how compounding works - both gains and losses build on each other over time.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Hailey_Pease_Simulation_Challenge_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Single Simulation Results:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>================================================== </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Initial balance (age 25): $1,000</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Final balance (age 55): $8,043</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Total change: $7,043</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Total return: 704%</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Coin flip results: 17 heads, 13 tails</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Heads percentage: 57%</code></pre>
+</div>
+</div>
+<p><strong>What this plot shows:</strong> The blue line shows how your account balance changes over time. The red dashed line shows your starting point ($1,000), and the green dotted line shows the expected value after 30 years. Notice how the actual path can be very different from the expected value due to random chance.</p>
+</section>
+<section id="analysis-of-single-simulation-results" class="level2">
+<h2 class="anchored" data-anchor-id="analysis-of-single-simulation-results">Analysis of Single Simulation Results</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ ============================================================ </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>ANALYSIS OF SINGLE SIMULATION</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>============================================================ </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+🎯 Key Results:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • Started with: $1,000</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • Ended with: $8,043</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • Net change: $7,043</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • This simulation was PROFITABLE! 🎉
+   • You would be happy with this outcome</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+📊 Performance Analysis:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • Total return: 704%</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • Annualized return: 7.2%</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+🎲 Luck Factor:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • Got 17 heads out of 30 flips</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • Expected heads: 15</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • You were LUCKY - got more heads than expected! 🍀</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+💡 Key Insight:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • Even though the expected value per flip is positive ($1,050)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • Individual outcomes can vary dramatically due to compounding</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • This single simulation shows the high variability possible</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • Multiple simulations would give a better picture of the true risk</code></pre>
+</div>
+</div>
+<p><strong>Key Insight:</strong> One simulation doesn’t tell us the whole story. To understand the true risk and potential outcomes, we need to run many simulations and look at the distribution of results.</p>
+</section>
+<section id="question-4-multiple-simulations-100-simulations" class="level2">
+<h2 class="anchored" data-anchor-id="question-4-multiple-simulations-100-simulations">Question 4: Multiple Simulations (100 simulations)</h2>
+<p>Now let’s run 100 different simulations to see the range of possible outcomes. This will show us the distribution of final balances and help us understand the true risk of this investment strategy.</p>
+<p><strong>What we’re doing:</strong> We’ll run the same 30-year simulation 100 times with different random coin flips. This gives us a probability distribution showing all possible outcomes and their likelihoods.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Hailey_Pease_Simulation_Challenge_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Summary Statistics for 100 Simulations:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>================================================== </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Mean final balance: $3,872</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Median final balance: $206</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Minimum final balance: $0.054</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Maximum final balance: $125,666</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Probability above initial ($1,000): 0.3 (30%)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Probability above $10,000: 0.08 (8%)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+📊 Analysis of 100 Simulations:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • You would NOT be happy with 70% of outcomes</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • The median outcome results in a loss</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • There's huge variability: from $0.05 to $1e+05</code></pre>
+</div>
+</div>
+</section>
+<section id="question-5-probability-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="question-5-probability-analysis">Question 5: Probability Analysis</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ ============================================================ </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>PROBABILITY ANALYSIS - ORIGINAL STRATEGY</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>============================================================ </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+🎯 Key Probability Results:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • Probability that balance &gt; $1,000 at age 55: 0.3 (30%)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • Probability that balance ≤ $1,000 at age 55: 0.7 (70%)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+💡 Interpretation:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • You have a LESS than 50% chance of ending up with more than you started!
+   • This suggests the strategy is unfavorable in the long run</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+📈 Detailed Breakdown:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • 30 out of 100 simulations ended above $1,000</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • 70 out of 100 simulations ended at or below $1,000</code></pre>
+</div>
+</div>
+<p><strong>Key Insight:</strong> The histogram shows the distribution of final balances across 100 simulations. Most outcomes cluster around certain values, but there’s a wide range of possible results. This is the reality of investment risk - even with a positive expected value, individual outcomes can vary dramatically.</p>
+</section>
+<section id="question-6-strategy-comparison---modified-game" class="level2">
+<h2 class="anchored" data-anchor-id="question-6-strategy-comparison---modified-game">Question 6: Strategy Comparison - Modified Game</h2>
+<p>Now let’s compare the original strategy with a modified version to see how different rules affect outcomes.</p>
+<p><strong>Modified Game Rules:</strong> - Start with $1,000 - Must bet exactly 50% of current balance each round - Heads: increase your bet by 50% (add 50% of bet to balance) - Tails: reduce your bet by 40% (subtract 40% of bet from balance) - Play for 30 years (age 25 to 55)</p>
+<p><strong>Key Difference:</strong> In the modified game, you can only bet 50% of your balance each round, rather than betting your entire balance. This should theoretically reduce risk, but let’s see what the simulations show.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ ============================================================ </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>MODIFIED GAME STRATEGY RESULTS</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>============================================================ </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Summary Statistics for Modified Game (100 Simulations):</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Mean final balance: $2,238</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Median final balance: $1,000</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Minimum final balance: $44</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Maximum final balance: $55,511</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Probability above initial ($1,000): 0.41 (41%)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Probability above $10,000: 0.01 (1%)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ ============================================================ </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>STRATEGY COMPARISON ANALYSIS</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>============================================================ </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+🎯 Key Comparison Results:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • Original Strategy - Probability above $10,000: 0.08 (8%)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • Modified Strategy - Probability above $10,000: 0.01 (1%)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • The ORIGINAL strategy has a HIGHER probability of reaching $10,000! 🎯</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • Difference: -0.07 (-7%)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+💡 Strategic Insights:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • Original strategy has higher average returns</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • Modified strategy has higher median returns</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • Modified strategy range: $44 to $55,511</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • Original strategy range: $0.05 to $1e+05</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Hailey_Pease_Simulation_Challenge_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="final-analysis-and-recommendations" class="level2">
+<h2 class="anchored" data-anchor-id="final-analysis-and-recommendations">Final Analysis and Recommendations</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ ====================================================================== </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>FINAL ANALYSIS AND RECOMMENDATIONS</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>====================================================================== </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+🎲 Key Findings:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1. Expected value per flip is positive ($1,050)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2. Original strategy: 8% chance of reaching $10,000</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>3. Modified strategy: 1% chance of reaching $10,000</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>4. The ORIGINAL strategy is better for reaching $10,000</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+💡 Investment Implications:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • Both strategies show the power of compounding over time</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • High variability means outcomes can be dramatically different</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • The 'safer' modified strategy (betting only 50%) may actually be riskier</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • Individual luck plays a huge role in short-term outcomes</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   • Multiple simulations reveal the true risk profile</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+🎯 Recommendation for a 25-year-old:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Consider the ORIGINAL strategy for higher probability of reaching $10,000</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   However, remember that past performance doesn't guarantee future results!</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Diversification and professional financial advice are always recommended.</code></pre>
+</div>
+</div>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
